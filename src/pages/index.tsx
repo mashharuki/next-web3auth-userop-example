@@ -1,5 +1,7 @@
 import ActionButton from "@/components/ActionButton";
+import Address from "@/components/Address";
 import Button from "@/components/Button";
+import Console from "@/components/Console";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
@@ -228,14 +230,11 @@ export default function Home() {
             {idToken ? (
               <div className="space-y-4">
                 <div className="flex justify-end space-x-4">
-                  <p className="flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-                    Logged in as&nbsp;
-                    <code className="font-mono font-bold text-green-300">
-                      {account?.getSender()}
-                    </code>
-                  </p>
-                  {/* Logout Button */}
-                  <Button name="Logout" onClickFunction={logout} />
+                  <Address address={account?.getSender()} />
+                  <Button 
+                    name="Logout" 
+                    onClickFunction={logout} 
+                  />
                 </div>
                 <div>
                   <div className="grid grid-cols-3 grid-rows-2 gap-4">
@@ -246,7 +245,7 @@ export default function Home() {
                         description={"Simple transfer of 0 ETH to an arbitrary address with gas sponsored."}
                         onClickFunction={() =>
                           sendTransaction(
-                            "0x5DF100D986A370029Ae8F09Bb56b67DA1950548E",
+                            "0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072",
                             "0.1"
                           )}
                       />
@@ -270,18 +269,15 @@ export default function Home() {
                         }
                       />
                     </div>
-                    <div className="overflow-scroll col-start-2 col-span-2 row-span-2 border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-                      <div className="w-[1000px]">
-                        <div className="block whitespace-pre-wrap justify-center ">
-                          <pre>{events.join(`\n`)}</pre>
-                        </div>
-                      </div>
-                    </div>
+                    <Console events={events} />
                   </div>
                 </div>
               </div>
             ) : (
-              <Button name="Login" onClickFunction={login} />
+              <Button 
+                name="Login" 
+                onClickFunction={login} 
+              />
             )}
           </div>
         )}
