@@ -63,7 +63,7 @@ export default function Home() {
     const init = async () => {
       setLoading(true);
       try {
-        const provider = new JsonRpcProvider(rpcUrl);
+        const provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL);
         const network = await provider.getNetwork();
         const chainId = network.chainId;
         
@@ -74,11 +74,13 @@ export default function Home() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: toQuantity(chainId),
-            rpcTarget: rpcUrl,
+            rpcTarget: process.env.NEXT_PUBLIC_RPC_URL,
           },
         });
         // initModal method
         await web3auth.initModal();
+
+        console.log("web3auth:", web3auth);
 
         setWeb3auth(web3auth);
         setAuthorized(web3auth);
