@@ -3,6 +3,7 @@ import Address from "@/components/Address";
 import Button from "@/components/Button";
 import Console from "@/components/Console";
 import LoadingIndicator from "@/components/LoadingIndicator";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import {
@@ -231,6 +232,8 @@ export default function Home() {
               <div className="space-y-4">
                 <div className="flex justify-end space-x-4">
                   <Address address={account?.getSender()} />
+                  {/* Rainbow kit button */}
+                  <ConnectButton />
                   <Button 
                     name="Logout" 
                     onClickFunction={logout} 
