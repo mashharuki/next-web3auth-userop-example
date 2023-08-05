@@ -54,43 +54,44 @@ export default function Home() {
     : undefined;
 
   /**
+   * 初期化メソッド
+   */
+  const init = async () => {
+    setLoading(true);
+    try {
+      const provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL);
+      const network = await provider.getNetwork();
+      const chainId = network.chainId;
+      
+      // create Web3Auth object
+      const web3Auth = new Web3Auth({
+        clientId: web3AuthClientId,
+        web3AuthNetwork: "testnet",
+        chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: toQuantity(chainId),
+          rpcTarget: process.env.NEXT_PUBLIC_RPC_URL,
+        },
+      });
+      // initModal method
+      await web3Auth.initModal();
+
+      console.log("web3auth:", web3Auth);
+
+      setWeb3auth(web3Auth);
+      // call setAuthorized method
+      setAuthorized(web3Auth);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /**
    * 副作用フック
    */
   useEffect(() => {
-    /**
-     * 初期化メソッド
-     */
-    const init = async () => {
-      setLoading(true);
-      try {
-        const provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL);
-        const network = await provider.getNetwork();
-        const chainId = network.chainId;
-        
-        // create Web3Auth object
-        const web3auth = new Web3Auth({
-          clientId: web3AuthClientId,
-          web3AuthNetwork: "testnet",
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: toQuantity(chainId),
-            rpcTarget: process.env.NEXT_PUBLIC_RPC_URL,
-          },
-        });
-        // initModal method
-        await web3auth.initModal();
-
-        console.log("web3auth:", web3auth);
-
-        setWeb3auth(web3auth);
-        setAuthorized(web3auth);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     init();
   }, []);
 
@@ -126,15 +127,19 @@ export default function Home() {
    * @param w3auth 
    */
   const setAuthorized = async (w3auth: Web3Auth) => {
+    
     if (!w3auth.provider) {
-      throw new Error("web3authprovider not initialized yet");
-    }
+      // throw new Error("web3authprovider not initialized yet");
+      await w3auth.connect();
+    };
+    
     // authorized
-    const authenticateUser = await w3auth.authenticateUser();
+    const authenticateUser = await w3auth?.authenticateUser();
     // get privateKey
-    const privateKey = await getPrivateKey(w3auth.provider);
+    const privateKey = await getPrivateKey(w3auth.provider!);
     // crate contract wallet
     const acc = await createAccount(privateKey);
+    
     setIdToken(authenticateUser.idToken);
     setAccount(acc);
     setPrivateKey(privateKey);
@@ -242,7 +247,7 @@ export default function Home() {
                         onClickFunction={() =>
                           sendTransaction(
                             "0x5DF100D986A370029Ae8F09Bb56b67DA1950548E",
-                            "0"
+                            "0.1"
                           )}
                       />
                       {/* get Privatekey Button */}
