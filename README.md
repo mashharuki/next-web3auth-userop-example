@@ -36,7 +36,7 @@ STACKUP_RPC_URL=Your_Stackup_RPC_URL`
 Install all dependencies by running the following command:
 
 ```bash
-npm install
+yarn
 ```
 
 ### Run the Application
@@ -44,7 +44,7 @@ npm install
 You can start the application with the following command:
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 The application should now be running at [http://localhost:3000](http://localhost:3000/).

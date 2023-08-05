@@ -24,16 +24,14 @@ import {
  */
 export default function Home() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [account, setAccount] = useState<Presets.Builder.SimpleAccount | null>(
-    null
-  );
-
+  const [account, setAccount] = useState<Presets.Builder.SimpleAccount | null>(null);
   const [idToken, setIdToken] = useState<string | null>(null);
   const [privateKey, setPrivateKey] = useState<string | null>(null);
-  const [events, setEvents] = useState<string[]>([
-    `A sample application to demonstrate how to integrate self-custodial\nsocial login and transacting with Web3Auth and userop.js.`,
-  ]);
   const [loading, setLoading] = useState(false);
+  const [events, setEvents] = useState<string[]>([
+    `A sample application to demonstrate how to integrate self-custodial\n
+    social login and transacting with Web3Auth and userop.js.`,
+  ]);
 
   const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL;
   const pmUrl = process.env.NEXT_PUBLIC_PAYMASTER_URL;
@@ -211,13 +209,13 @@ export default function Home() {
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24`}
-    >
+    <main className={`flex min-h-screen flex-col items-center justify-between p-24`}>
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <div></div>
         {loading ? (
-          <LoadingIndicator/>
+          <div className="h-screen w-screen flex justify-center items-center">
+            <LoadingIndicator/>
+          </div>
         ) : (
           <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
             {idToken ? (
